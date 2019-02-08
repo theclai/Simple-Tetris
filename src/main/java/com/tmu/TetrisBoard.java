@@ -140,11 +140,17 @@ public class TetrisBoard extends JPanel implements KeyListener {
             currentTetromino.setPosX(1);
         }
         else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-            currentTetromino.setPosY(1);
+            currentTetromino.downSpeed();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_UP){
+            currentTetromino.rotate();
         }
     }
 
     public void keyReleased(KeyEvent e) {
 
+        if(e.getKeyCode() == KeyEvent.VK_DOWN){
+            currentTetromino.defaultSpeed();
+        }
     }
 }

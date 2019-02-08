@@ -20,8 +20,9 @@ public class Tetromino {
     private int posY = 0;
     private int x=0;
     private  int y=0;
-    private int speed = 600;
-    private int downSpeed = 10;
+    private int defaultSpeed = 600;
+    private int downSpeed = 60;
+    private int currentSpeed = 0;
     private long time;
     private long lastTime;
 
@@ -33,6 +34,7 @@ public class Tetromino {
         x = 2;
         y = 0;
 
+        currentSpeed = defaultSpeed;
         time = 0;
         lastTime = System.currentTimeMillis();
     }
@@ -46,9 +48,11 @@ public class Tetromino {
             x += posX;
         }
 
-        if(time > speed){
-            y++;
-            time =0;
+        if(!(y+1+coords.length > 20)){
+            if(time > currentSpeed){
+                y++;
+                time = 0;
+            }
         }
 
         posX = 0;
@@ -64,6 +68,19 @@ public class Tetromino {
                 }
             }
         }
+    }
+
+    public void rotate(){
+
+    }
+
+    public void downSpeed(){
+
+        this.currentSpeed = downSpeed;
+    }
+
+    public void defaultSpeed(){
+        this.currentSpeed = defaultSpeed;
     }
 
     public int getPosX() {
