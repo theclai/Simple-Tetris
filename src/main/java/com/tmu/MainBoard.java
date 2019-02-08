@@ -24,10 +24,9 @@ public class MainBoard {
         board.setResizable(false);
         board.setLocationRelativeTo(null);
 
-
         tetrisBoard = new TetrisBoard();
         board.add(tetrisBoard);
-
+        board.addKeyListener(tetrisBoard);
         board.setVisible(true);
     }
 

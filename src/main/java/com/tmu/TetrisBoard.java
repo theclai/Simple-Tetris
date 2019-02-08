@@ -7,6 +7,10 @@ package com.tmu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -14,7 +18,7 @@ import java.io.IOException;
  * @author Faisal_RM754
  * @version $Id: TetrisBoard.java, v 0.1 20190208 9:52 Faisal_RM754 Exp $$
  */
-public class TetrisBoard extends JPanel {
+public class TetrisBoard extends JPanel implements KeyListener {
 
     private static final int boardWidth = 20;
     private static final int boardHeight = 30;
@@ -23,6 +27,9 @@ public class TetrisBoard extends JPanel {
     private int[][] boards = new int[boardWidth][boardHeight];
     private Tetromino[] tetrominos = new Tetromino[7];
     private  Tetromino currentTetromino;
+    private Timer timer;
+    private final int framePerSecond = 60;
+    private  final int delay = 1000 /framePerSecond;
 
     public TetrisBoard(){
 
@@ -32,6 +39,16 @@ public class TetrisBoard extends JPanel {
             e.printStackTrace();
         }
 
+       timer = new Timer(delay, new ActionListener() {
+
+           public void actionPerformed(ActionEvent e) {
+
+               repaint();
+               update();
+           }
+       });
+
+        timer.start();
         //I
         tetrominos[0] = new Tetromino(block.getSubimage(0,0,blockSize,blockSize),
                 new int[][]{
@@ -80,7 +97,7 @@ public class TetrisBoard extends JPanel {
                         {1,1}
                 },this);
 
-        currentTetromino = tetrominos[5];
+        currentTetromino = tetrominos[2];
     }
 
     public int getBlockSize() {
@@ -94,7 +111,7 @@ public class TetrisBoard extends JPanel {
         //g.drawRect(100,100, BOARD_WIDTH, BOARD_HEIGHT);
         //g.drawImage(block,0,0,null);
 
-        currentTetromino.Render(g);
+        currentTetromino.render(g);
 
         for (int i=0;i<boardHeight;i++){
             g.drawLine(0, i*blockSize,boardWidth*blockSize,i*blockSize);
@@ -103,5 +120,31 @@ public class TetrisBoard extends JPanel {
         for (int j=0;j<boardWidth;j++){
             g.drawLine(j*blockSize,0,j*blockSize,boardHeight*blockSize);
         }
+    }
+
+    public void update(){
+
+        currentTetromino.update();
+    }
+
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    public void keyPressed(KeyEvent e) {
+
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            currentTetromino.setPosX(-1);
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            currentTetromino.setPosX(1);
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+            currentTetromino.setPosY(1);
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+
     }
 }
