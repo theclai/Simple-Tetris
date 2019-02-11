@@ -97,7 +97,7 @@ public class TetrisBoard extends JPanel implements KeyListener {
                         {1,1}
                 },this);
 
-        currentTetromino = tetrominos[2];
+        currentTetromino = tetrominos[4];
     }
 
     public int getBlockSize() {

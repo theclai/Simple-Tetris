@@ -72,6 +72,37 @@ public class Tetromino {
 
     public void rotate(){
 
+       int[][] rotatedMatrix = transpose(coords);
+       rotatedMatrix = reverseMatrix(rotatedMatrix);
+       coords = rotatedMatrix;
+    }
+
+    public int[][] transpose(int[][] matrix){
+
+        int[][] newMatrix = new int[matrix[0].length][matrix.length];
+
+        for (int i=0;i<matrix.length;i++){
+            for (int j=0;j<matrix[0].length;j++){
+                newMatrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return newMatrix;
+    }
+
+    private int[][] reverseMatrix(int[][] matrix) {
+
+        int c = matrix.length / 2;
+        int l = matrix.length;
+
+        for (int i = 0; i < c; i++) {
+
+            int[] temp = matrix[i];
+            matrix[i] = matrix[l - i - 1];
+            matrix[l - i - 1] = temp;
+        }
+
+        return matrix;
     }
 
     public void downSpeed(){
