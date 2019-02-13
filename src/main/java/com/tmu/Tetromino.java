@@ -63,6 +63,7 @@ public class Tetromino {
             }
 
             checkLine();
+            tetrisBoard.addScore();
             tetrisBoard.createNewTetromino();
         }
 

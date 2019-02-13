@@ -13,7 +13,7 @@ import javax.swing.*;
 public class MainBoard {
 
     private JFrame board;
-    public static  final int WIDTH = 300;
+    public static  final int WIDTH = 445;
     public static final int HEIGHT = 630;
     private TetrisBoard tetrisBoard;
 

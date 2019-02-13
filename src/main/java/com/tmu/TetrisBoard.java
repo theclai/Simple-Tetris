@@ -31,6 +31,7 @@ public class TetrisBoard extends JPanel implements KeyListener {
     private final int framePerSecond = 60;
     private  final int delay = 1000 /framePerSecond;
     private boolean gameOver = false;
+    private int score = 0;
 
     public TetrisBoard(){
 
@@ -131,7 +132,11 @@ public class TetrisBoard extends JPanel implements KeyListener {
         }
     }
 
-    public void paintComponent(Graphics g){
+    public void addScore(){
+        this.score++;
+    }
+
+    public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
 
@@ -140,12 +145,12 @@ public class TetrisBoard extends JPanel implements KeyListener {
 
         currentTetromino.render(g);
 
-        for (int i=0;i<boards.length;i++){
-            for(int j=0;j<boards[i].length;j++){
+        for (int i = 0; i < boards.length; i++) {
+            for (int j = 0; j < boards[i].length; j++) {
 
-                if(boards[i][j] != 0){
+                if (boards[i][j] != 0) {
 
-                    g.drawImage(block.getSubimage((boards[i][j]-1) * blockSize,0,blockSize, blockSize),
+                    g.drawImage(block.getSubimage((boards[i][j] - 1) * blockSize, 0, blockSize, blockSize),
                             j * blockSize, i * blockSize, null);
                 }
             }
@@ -154,10 +159,17 @@ public class TetrisBoard extends JPanel implements KeyListener {
 //        for (int i=0;i<boardHeight;i++){
 //            g.drawLine(0, i*blockSize,boardWidth*blockSize,i*blockSize);
 //        }
-//
+
 //        for (int j=0;j<boardWidth;j++){
 //            g.drawLine(j*blockSize,0,j*blockSize,boardHeight*blockSize);
 //        }
+
+        // show score
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Serif", Font.BOLD, 20));
+        //g.drawString(String.valueOf(MainBoard.HEIGHT + 150),MainBoard.WIDTH - 125, MainBoard.HEIGHT  / 2 - 250);
+        g.drawString("SCORE", MainBoard.WIDTH - 125, MainBoard.HEIGHT / 2 - 250);
+        g.drawString(score + "", MainBoard.WIDTH - 125, MainBoard.HEIGHT / 2  - 220);
     }
 
     public void update(){
