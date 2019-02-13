@@ -120,6 +120,15 @@ public class TetrisBoard extends JPanel implements KeyListener {
                 temp.getCoords(),temp.getColor(), this);
 
         currentTetromino = nextT;
+
+        for (int r=0;r<currentTetromino.getCoords().length;r++){
+            for (int s=0;s<currentTetromino.getCoords()[r].length;s++){
+
+                if(boards[r][s+3] != 0 ){
+                    gameOver = true;
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics g){

@@ -132,6 +132,17 @@ public class Tetromino {
 
        int[][] rotatedMatrix = transpose(coords);
        rotatedMatrix = reverseMatrix(rotatedMatrix);
+
+       if (x + rotatedMatrix[0].length > 10 || y + rotatedMatrix.length > 20)
+           return;
+
+       for (int i=0;i<rotatedMatrix.length;i++){
+           for (int j=0;j<rotatedMatrix[0].length;j++){
+
+               if(tetrisBoard.getBoards()[y + i][x + j] != 0)
+                   return;
+           }
+       }
        coords = rotatedMatrix;
     }
 
