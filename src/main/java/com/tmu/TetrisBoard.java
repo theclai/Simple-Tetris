@@ -20,8 +20,8 @@ import java.io.IOException;
  */
 public class TetrisBoard extends JPanel implements KeyListener {
 
-    private static final int boardWidth = 20;
-    private static final int boardHeight = 30;
+    private static final int boardWidth = 10;
+    private static final int boardHeight = 20;
     private final int blockSize = 30;
     private BufferedImage block;
     private int[][] boards = new int[boardHeight][boardWidth];
@@ -30,6 +30,7 @@ public class TetrisBoard extends JPanel implements KeyListener {
     private Timer timer;
     private final int framePerSecond = 60;
     private  final int delay = 1000 /framePerSecond;
+    private boolean gameOver = false;
 
     public TetrisBoard(){
 
@@ -97,7 +98,8 @@ public class TetrisBoard extends JPanel implements KeyListener {
                         {1,1}
                 },7,this);
 
-        currentTetromino = tetrominos[4];
+        //currentTetromino = tetrominos[4];
+        createNewTetromino();
     }
 
     public int[][] getBoards() {
@@ -140,16 +142,19 @@ public class TetrisBoard extends JPanel implements KeyListener {
             }
         }
 
-        for (int i=0;i<boardHeight;i++){
-            g.drawLine(0, i*blockSize,boardWidth*blockSize,i*blockSize);
-        }
-
-        for (int j=0;j<boardWidth;j++){
-            g.drawLine(j*blockSize,0,j*blockSize,boardHeight*blockSize);
-        }
+//        for (int i=0;i<boardHeight;i++){
+//            g.drawLine(0, i*blockSize,boardWidth*blockSize,i*blockSize);
+//        }
+//
+//        for (int j=0;j<boardWidth;j++){
+//            g.drawLine(j*blockSize,0,j*blockSize,boardHeight*blockSize);
+//        }
     }
 
     public void update(){
+
+        if(gameOver)
+            timer.stop();
 
         currentTetromino.update();
     }

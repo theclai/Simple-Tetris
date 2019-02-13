@@ -14,7 +14,7 @@ public class MainBoard {
 
     private JFrame board;
     public static  final int WIDTH = 300;
-    public static final int HEIGHT = 600;
+    public static final int HEIGHT = 630;
     private TetrisBoard tetrisBoard;
 
     public MainBoard(){

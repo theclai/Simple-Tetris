@@ -59,13 +59,14 @@ public class Tetromino {
 
                         tetrisBoard.getBoards()[y + i][x + j] = color;
                     }
-
-                    tetrisBoard.createNewTetromino();
                 }
             }
+
+            checkLine();
+            tetrisBoard.createNewTetromino();
         }
 
-        if(!(x + posX + coords[0].length > 11) && !(x + posX  < 0)){
+        if(!(x + posX + coords[0].length > 10) && !(x + posX  < 0)){
 
             for (int i = 0; i < coords.length; i++) {
                 for (int j = 0; j < coords[i].length; j++) {
@@ -86,7 +87,7 @@ public class Tetromino {
 
         }
 
-        if(!(y+1+coords.length > 19)) {
+        if(!(y+1+coords.length > 20)) {
 
             for (int i = 0; i < coords.length; i++) {
                 for (int j = 0; j < coords[i].length; j++) {
@@ -160,6 +161,27 @@ public class Tetromino {
         }
 
         return matrix;
+    }
+
+    private void checkLine(){
+
+        int height = tetrisBoard.getBoards().length - 1;
+
+        for (int i=height;i>0;i--){
+
+            int count = 0;
+
+            for (int j=0;j<tetrisBoard.getBoards()[0].length;j++){
+
+                if (tetrisBoard.getBoards()[i][j] != 0)
+                    count++;
+
+                    tetrisBoard.getBoards()[height][j] = tetrisBoard.getBoards()[i][j];
+            }
+
+            if(count < tetrisBoard.getBoards()[0].length)
+                height--;
+        }
     }
 
     public void downSpeed(){
