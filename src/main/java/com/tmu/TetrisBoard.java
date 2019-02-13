@@ -24,7 +24,7 @@ public class TetrisBoard extends JPanel implements KeyListener {
     private static final int boardHeight = 30;
     private final int blockSize = 30;
     private BufferedImage block;
-    private int[][] boards = new int[boardWidth][boardHeight];
+    private int[][] boards = new int[boardHeight][boardWidth];
     private Tetromino[] tetrominos = new Tetromino[7];
     private  Tetromino currentTetromino;
     private Timer timer;
@@ -53,55 +53,71 @@ public class TetrisBoard extends JPanel implements KeyListener {
         tetrominos[0] = new Tetromino(block.getSubimage(0,0,blockSize,blockSize),
                 new int[][]{
                         {1,1,1}
-                },this);
+                },1, this);
 
         //Z
         tetrominos[1] = new Tetromino(block.getSubimage(blockSize,0,blockSize,blockSize),
                 new int[][]{
                         {1,1,0},
                         {0,1,1}
-                },this);
+                },2,this);
 
         //S
         tetrominos[2] = new Tetromino(block.getSubimage(blockSize*2,0,blockSize,blockSize),
                 new int[][]{
                         {0,1,1},
                         {1,1,0}
-                },this);
+                },3,this);
 
         //J
         tetrominos[3] = new Tetromino(block.getSubimage(blockSize*3,0,blockSize,blockSize),
                 new int[][]{
                         {1,1,1},
                         {0,0,1}
-                },this);
+                },4,this);
 
         //L
         tetrominos[4] = new Tetromino(block.getSubimage(blockSize*4,0,blockSize,blockSize),
                 new int[][]{
                         {1,1,1},
                         {1,0,0}
-                },this);
+                },5,this);
 
         //T
         tetrominos[5] = new Tetromino(block.getSubimage(blockSize*5,0,blockSize,blockSize),
                 new int[][]{
                         {1,1,1},
                         {0,1,0}
-                },this);
+                },6,this);
 
         //O
         tetrominos[6] = new Tetromino(block.getSubimage(blockSize*6,0,blockSize,blockSize),
                 new int[][]{
                         {1,1},
                         {1,1}
-                },this);
+                },7,this);
 
         currentTetromino = tetrominos[4];
     }
 
+    public int[][] getBoards() {
+        return boards;
+    }
+
     public int getBlockSize() {
         return blockSize;
+    }
+
+    public void createNewTetromino(){
+
+        int l = tetrominos.length;
+        int i = (int)(Math.random() * l);
+
+        Tetromino temp = tetrominos[i];
+        Tetromino nextT = new Tetromino(temp.getBlock(),
+                temp.getCoords(),temp.getColor(), this);
+
+        currentTetromino = nextT;
     }
 
     public void paintComponent(Graphics g){
@@ -112,6 +128,17 @@ public class TetrisBoard extends JPanel implements KeyListener {
         //g.drawImage(block,0,0,null);
 
         currentTetromino.render(g);
+
+        for (int i=0;i<boards.length;i++){
+            for(int j=0;j<boards[i].length;j++){
+
+                if(boards[i][j] != 0){
+
+                    g.drawImage(block.getSubimage((boards[i][j]-1) * blockSize,0,blockSize, blockSize),
+                            j * blockSize, i * blockSize, null);
+                }
+            }
+        }
 
         for (int i=0;i<boardHeight;i++){
             g.drawLine(0, i*blockSize,boardWidth*blockSize,i*blockSize);
@@ -139,7 +166,7 @@ public class TetrisBoard extends JPanel implements KeyListener {
         else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             currentTetromino.setPosX(1);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+        else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_SPACE){
             currentTetromino.downSpeed();
         }
         else if(e.getKeyCode() == KeyEvent.VK_UP){

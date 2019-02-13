@@ -25,18 +25,24 @@ public class Tetromino {
     private int currentSpeed = 0;
     private long time;
     private long lastTime;
+    private boolean collision = false;
+    private boolean moveX = false;
+    private int color;
 
-    public Tetromino(BufferedImage block, int[][] coords, TetrisBoard tetrisBoard){
+    public Tetromino(BufferedImage block, int[][] coords, int color, TetrisBoard tetrisBoard){
 
         this.block = block;
         this.coords = coords;
         this.tetrisBoard = tetrisBoard;
-        x = 2;
-        y = 0;
+        this.color = color;
 
         currentSpeed = defaultSpeed;
         time = 0;
         lastTime = System.currentTimeMillis();
+
+        x = 3;
+        y = 0;
+
     }
 
     public void update(){
@@ -44,27 +50,78 @@ public class Tetromino {
         time += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        if(!(x + posX + coords[0].length > 11) && !(x + posX  < 0)){
-            x += posX;
-        }
+        if (collision) {
 
-        if(!(y+1+coords.length > 20)){
-            if(time > currentSpeed){
-                y++;
-                time = 0;
+            for (int i = 0; i < coords.length; i++){
+                for (int j = 0; j < coords[i].length; j++){
+
+                    if (coords[i][j] != 0){
+
+                        tetrisBoard.getBoards()[y + i][x + j] = color;
+                    }
+
+                    tetrisBoard.createNewTetromino();
+                }
             }
         }
 
+        if(!(x + posX + coords[0].length > 11) && !(x + posX  < 0)){
+
+            for (int i = 0; i < coords.length; i++) {
+                for (int j = 0; j < coords[i].length; j++) {
+
+                    if (coords[i][j] != 0) {
+
+                        if(tetrisBoard.getBoards()[i + y][j + x + posX]  != 0){
+
+                            moveX = false;
+                        }
+                    }
+                }
+            }
+
+            if(moveX){
+                x += posX;
+            }
+
+        }
+
+        if(!(y+1+coords.length > 19)) {
+
+            for (int i = 0; i < coords.length; i++) {
+                for (int j = 0; j < coords[i].length; j++) {
+
+                    if (coords[i][j] != 0) {
+
+                        if(tetrisBoard.getBoards()[i + y + 1][j + x] != 0){
+
+                            collision = true;
+                        }
+                    }
+                }
+            }
+
+            if (time > currentSpeed) {
+                y++;
+                time = 0;
+            }
+
+        }else{
+            collision = true;
+        }
+
         posX = 0;
+        moveX = true;
     }
 
     public void render(Graphics g){
 
         for (int i=0;i<coords.length;i++){
             for(int j=0;j<coords[i].length;j++){
+
                 if(coords[i][j] != 0){
-                    g.drawImage(block, i * tetrisBoard.getBlockSize() + x*tetrisBoard.getBlockSize(),
-                            j*tetrisBoard.getBlockSize() + y*tetrisBoard.getBlockSize(), null);
+                    g.drawImage(block, j * tetrisBoard.getBlockSize() + x*tetrisBoard.getBlockSize(),
+                            i*tetrisBoard.getBlockSize() + y*tetrisBoard.getBlockSize(), null);
                 }
             }
         }
@@ -128,5 +185,25 @@ public class Tetromino {
 
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public BufferedImage getBlock() {
+        return block;
+    }
+
+    public void setBlock(BufferedImage block) {
+        this.block = block;
+    }
+
+    public int[][] getCoords() {
+        return coords;
+    }
+
+    public void setCoords(int[][] coords) {
+        this.coords = coords;
+    }
+
+    public int getColor() {
+        return color;
     }
 }
